@@ -1,4 +1,4 @@
-FROM leoyuholo/pytorch-notebook-gpu
+FROM leoyuholo/scipy-notebook-gpu
 
 RUN git clone https://github.com/fastai/fastai.git && \
     cd fastai && \
