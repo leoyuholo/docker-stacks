@@ -7,4 +7,4 @@ nvidia-docker run \
               -u 0 \
               -v /home/leo/ws:/home/jovyan \
               leoyuholo/fastai-notebook-gpu \
-              start.sh jupyter lab
+              start.sh jupyter notebook

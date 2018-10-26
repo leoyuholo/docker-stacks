@@ -1,11 +1,15 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Ubuntu 16.04 (xenial) from 2018-02-28
-# https://github.com/docker-library/official-images/commit/8728671fdca3dfc029be4ab838ab5315aa125181
-FROM leoyuholo/nvidia-docker
+# Ubuntu 18.04 (bionic) from 2018-05-26
+# https://github.com/docker-library/official-images/commit/aac6a45b9eb2bffb8102353c350d341a410fb169
+ARG BASE_CONTAINER=nvidia/cuda:9.2-devel-ubuntu18.04
+FROM $BASE_CONTAINER
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
 
 USER root
 
@@ -29,9 +33,9 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 # Configure environment
 ENV CONDA_DIR=/opt/conda \
     SHELL=/bin/bash \
-    NB_USER=jovyan \
-    NB_UID=1000 \
-    NB_GID=100 \
+    NB_USER=$NB_USER \
+    NB_UID=$NB_UID \
+    NB_GID=$NB_GID \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
@@ -87,11 +91,11 @@ RUN conda install --quiet --yes 'tini=0.18.0' && \
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
 RUN conda install --quiet --yes \
-    'notebook=5.6.*' \
-    'jupyterhub=0.9.*' \
-    'jupyterlab=0.33.*' && \
+    'notebook=5.7.0' \
+    'jupyterhub=0.9.4' \
+    'jupyterlab=0.34.12' && \
     conda clean -tipsy && \
-    jupyter labextension install @jupyterlab/hub-extension@^0.10.0 && \
+    jupyter labextension install @jupyterlab/hub-extension@^0.11.0 && \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
