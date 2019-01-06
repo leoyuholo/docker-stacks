@@ -268,7 +268,7 @@ USER $NB_USER
 
 Credit: [britishbadger](https://github.com/britishbadger) from [docker-stacks/issues/369](https://github.com/jupyter/docker-stacks/issues/369)
 
-# Run jupyterlab inside an already secured environment (i.e., with no token)
+## Run Jupyter Notebook/Lab inside an already secured environment (i.e., with no token)
 
 (Adapted from [issue 728](https://github.com/jupyter/docker-stacks/issues/728))
 
@@ -289,4 +289,19 @@ For jupyter classic:
 docker run jupyter/base-notebook:6d2a05346196 start.sh jupyter notebook --NotebookApp.token=''
 ```
 
+## Enable nbextension spellchecker for markdown (or any other nbextension)
 
+NB: this works for classic notebooks only
+```
+# Update with your base image of choice
+FROM jupyter/minimal-notebook:latest
+
+USER $NB_USER
+
+RUN pip install jupyter_contrib_nbextensions && \
+    jupyter contrib nbextension install --user && \
+    # can modify or enable additional extensions here
+    jupyter nbextension enable spellchecker/main --user
+```
+
+Ref: [https://github.com/jupyter/docker-stacks/issues/675](https://github.com/jupyter/docker-stacks/issues/675)
